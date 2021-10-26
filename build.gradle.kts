@@ -7,6 +7,12 @@ plugins {
     kotlin("plugin.spring") version "1.5.31"
     kotlin("plugin.jpa") version "1.5.31"
     kotlin("plugin.allopen") version "1.4.32"
+    id("com.google.cloud.tools.jib") version "3.1.4"
+}
+
+jib {
+    to.image = "jadam5/my_notes"
+    container.jvmFlags = listOf("-Dspring.profiles.active=prod")
 }
 
 allOpen {

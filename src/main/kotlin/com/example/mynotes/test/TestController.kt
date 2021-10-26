@@ -1,11 +1,11 @@
 package com.example.mynotes.test
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping(path = ["api/test"])
+@RequestMapping("api/test")
 class TestController(private val testRepository: TestRepository) {
 
     @GetMapping("fake")
@@ -17,4 +17,10 @@ class TestController(private val testRepository: TestRepository) {
 
     @GetMapping("db")
     fun getDbData(): List<Test> = testRepository.findAll()
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("db", consumes = [MediaType.APPLICATION_JSON_VALUE])
+    fun postTest(@RequestBody createTestRequest: CreateTestRequest) {
+        testRepository.save(Test(title = createTestRequest.title))
+    }
 }
