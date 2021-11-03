@@ -8,18 +8,18 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("api/test")
 class TestController(private val testRepository: TestRepository) {
 
-    @GetMapping("fake")
+    @GetMapping("/fake")
     fun getFakeData(): List<Test> = listOf(
             Test(1, "Fake1"),
             Test(2, "Fake2"),
             Test(3, "Fake3"),
     )
 
-    @GetMapping("db")
+    @GetMapping("/db")
     fun getDbData(): List<Test> = testRepository.findAll()
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("db", consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/db", consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun postTest(@RequestBody createTestRequest: CreateTestRequest) {
         testRepository.save(Test(title = createTestRequest.title))
     }

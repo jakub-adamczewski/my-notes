@@ -7,7 +7,7 @@ import javax.persistence.Table
 
 @Entity
 @Table
-class Test(
+data class Test(
         @Id @GeneratedValue var id: Long? = null,
         var title: String
 )
