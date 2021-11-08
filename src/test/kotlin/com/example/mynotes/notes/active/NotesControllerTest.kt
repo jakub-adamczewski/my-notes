@@ -45,7 +45,7 @@ internal class NotesControllerTest {
 
         every { notesService.findAll() } returns returnedNotes
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/notes"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/notes").contextPath("/api"))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpectProperValues(returnedNotes)
     }
@@ -57,7 +57,7 @@ internal class NotesControllerTest {
 
         every { notesService.findAllBySearch(search) } returns returnedNotes
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/notes").param("search", search))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/notes").contextPath("/api").param("search", search))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpectProperValues(returnedNotes)
     }
@@ -69,7 +69,7 @@ internal class NotesControllerTest {
 
         every { notesService.save(title, content) } returns returnedNote
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/notes").jsonBody(requestBody))
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/notes").contextPath("/api").jsonBody(requestBody))
             .andExpect(MockMvcResultMatchers.status().isCreated)
             .andExpectProperValue(returnedNote)
     }
@@ -79,7 +79,7 @@ internal class NotesControllerTest {
         val (title, content) = "    " to "  "
         val requestBody = NoteRequestBody(title, content)
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/notes").jsonBody(requestBody))
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/notes").contextPath("/api").jsonBody(requestBody))
             .andExpect(MockMvcResultMatchers.status().isBadRequest)
     }
 
@@ -90,7 +90,7 @@ internal class NotesControllerTest {
 
         every { notesService.update(noteId, title, content) } returns true
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/notes/${noteId}").jsonBody(requestBody))
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/notes/${noteId}").contextPath("/api").jsonBody(requestBody))
             .andExpect(MockMvcResultMatchers.status().isOk)
     }
 
@@ -101,7 +101,7 @@ internal class NotesControllerTest {
 
         every { notesService.update(noteId, title, content) } returns false
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/notes/${noteId}").jsonBody(requestBody))
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/notes/${noteId}").contextPath("/api").jsonBody(requestBody))
             .andExpect(MockMvcResultMatchers.status().isNotFound)
     }
 
@@ -111,7 +111,7 @@ internal class NotesControllerTest {
 
         every { notesService.deleteById(noteId) } just runs
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/notes/${noteId}"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/notes/${noteId}").contextPath("/api"))
             .andExpect(MockMvcResultMatchers.status().isOk)
     }
 
