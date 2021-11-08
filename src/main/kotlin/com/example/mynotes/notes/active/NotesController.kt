@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 @RestController
-@RequestMapping("api/notes")
+@RequestMapping("/notes")
 class NotesController(private val notesService: NotesService) {
 
     @GetMapping
