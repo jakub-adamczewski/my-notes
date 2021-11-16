@@ -17,6 +17,10 @@ class NotesController(private val notesService: NotesService) {
         notesService.findAllBySearch(it)
     } ?: notesService.findAll()
 
+    @GetMapping("/{id}")
+    fun getOne(@PathVariable id: EntityId): Note = notesService.findById(id)
+        ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Note with id $id does not exist.")
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun addNote(@RequestBody noteRequestBody: NoteRequestBody): Note {

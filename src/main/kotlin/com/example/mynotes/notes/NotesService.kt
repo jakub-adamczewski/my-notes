@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service
 @Service
 class NotesService(private val notesRepository: NotesRepository) {
 
+    fun findById(id: EntityId): Note? = notesRepository.findById(id).orElse(null)
+
     fun findAll(): List<Note> = notesRepository.findAll()
 
     fun findAllBySearch(search: String): List<Note> = notesRepository.findAllBySearchInTitleOrContent(search)

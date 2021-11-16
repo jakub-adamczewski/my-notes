@@ -5,6 +5,7 @@ import io.mockk.*
 import org.junit.jupiter.api.BeforeEach
 
 import org.junit.jupiter.api.Test
+import java.util.*
 
 internal class NotesServiceTest {
 
@@ -18,25 +19,27 @@ internal class NotesServiceTest {
     @BeforeEach
     fun setUp() {
         every { notesRepository.save(any()) } returns Note(title, content)
-        every { notesRepository.getById(any()) } returns Note(title, content)
 
         sut = NotesService(notesRepository)
     }
 
     @Test
-    fun `can find all notes`(){
-        sut.findAll()
+    fun `SHOULD return null WHEN trying to get not existing notes`(){
+        every { notesRepository.findById(id) } returns Optional.empty()
 
-        verify(exactly = 1) { notesRepository.findAll() }
+        val effect = sut.findById(id)
+
+        assert(effect == null)
     }
 
     @Test
-    fun `can find all by search`(){
-        val search = "search text"
+    fun `SHOULD return note WHEN trying to get it`(){
+        val testNote = Note(title, content)
+        every { notesRepository.findById(id) } returns Optional.of(testNote)
 
-        sut.findAllBySearch(search)
+        val effect = sut.findById(id)
 
-        verify(exactly = 1) { notesRepository.findAllBySearchInTitleOrContent(search) }
+        assert(effect == testNote)
     }
 
     @Test
@@ -63,12 +66,4 @@ internal class NotesServiceTest {
 
         assert(effect)
     }
-
-    @Test
-    fun `can delete`(){
-        sut.deleteById(id)
-
-        verify(exactly = 1) { notesRepository.deleteById(id) }
-    }
-
 }

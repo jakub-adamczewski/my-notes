@@ -41,6 +41,27 @@ internal class NotesControllerTest {
     }
 
     @Test
+    fun `get note`() {
+        val testNote = notes.first()
+
+        every { notesService.findById(testNote.id) } returns testNote
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/notes/${testNote.id}").contextPath("/api"))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpectProperValue(testNote)
+    }
+
+    @Test
+    fun `SHOULD return not found WHEN note does not exists`() {
+        val noteId = EntityId.randomUUID()
+
+        every { notesService.findById(noteId) } returns null
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/notes/${noteId}").contextPath("/api"))
+            .andExpect(MockMvcResultMatchers.status().isNotFound)
+    }
+
+    @Test
     fun `get all notes`() {
         val returnedNotes = notes
 
