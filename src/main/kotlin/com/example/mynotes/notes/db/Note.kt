@@ -1,4 +1,4 @@
-package com.example.mynotes.notes
+package com.example.mynotes.notes.db
 
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp

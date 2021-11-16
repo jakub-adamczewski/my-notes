@@ -1,8 +1,7 @@
-package com.example.mynotes.notes.active
+package com.example.mynotes.notes
 
-import com.example.mynotes.notes.Note
+import com.example.mynotes.notes.db.Note
 import com.example.mynotes.notes.model.NoteRequestBody
-import com.example.mynotes.notes.NotesService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException

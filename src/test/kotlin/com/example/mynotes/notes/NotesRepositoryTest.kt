@@ -1,6 +1,7 @@
 package com.example.mynotes.notes
 
-import com.example.mynotes.notes.NotesStore.notes
+import com.example.mynotes.notes.TestDataStore.notes
+import com.example.mynotes.notes.db.NotesRepository
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 

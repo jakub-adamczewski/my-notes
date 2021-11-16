@@ -1,5 +1,7 @@
 package com.example.mynotes.notes
 
+import com.example.mynotes.notes.db.Note
+import com.example.mynotes.notes.db.NotesRepository
 import io.mockk.*
 import org.junit.jupiter.api.BeforeEach
 

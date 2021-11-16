@@ -1,8 +1,9 @@
 package com.example.mynotes.notes.active
 
-import com.example.mynotes.notes.Note
+import com.example.mynotes.notes.db.Note
+import com.example.mynotes.notes.NotesController
 import com.example.mynotes.notes.NotesService
-import com.example.mynotes.notes.NotesStore.notes
+import com.example.mynotes.notes.TestDataStore.notes
 import com.example.mynotes.notes.model.NoteRequestBody
 import com.google.gson.Gson
 import com.ninjasquad.springmockk.MockkBean
