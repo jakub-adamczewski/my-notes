@@ -1,4 +1,6 @@
-package com.example.mynotes.notes
+package com.example.mynotes.notes.util
+
+import com.example.mynotes.notes.Note
 
 object NotesStore {
 

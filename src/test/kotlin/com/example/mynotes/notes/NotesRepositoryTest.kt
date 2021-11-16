@@ -1,7 +1,7 @@
 package com.example.mynotes.notes
 
 import com.example.mynotes.base.EntityId
-import com.example.mynotes.notes.NotesStore.notes
+import com.example.mynotes.notes.util.NotesStore.notes
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach

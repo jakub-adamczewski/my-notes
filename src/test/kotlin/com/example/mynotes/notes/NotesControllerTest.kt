@@ -1,9 +1,7 @@
-package com.example.mynotes.notes.active
+package com.example.mynotes.notes
 
 import com.example.mynotes.base.EntityId
-import com.example.mynotes.notes.Note
-import com.example.mynotes.notes.NotesService
-import com.example.mynotes.notes.NotesStore.notes
+import com.example.mynotes.notes.util.NotesStore.notes
 import com.example.mynotes.notes.model.NoteRequestBody
 import com.google.gson.Gson
 import com.ninjasquad.springmockk.MockkBean
@@ -149,6 +147,4 @@ internal class NotesControllerTest {
 
     private fun MockHttpServletRequestBuilder.jsonBody(body: Any): MockHttpServletRequestBuilder =
         jsonBody(Gson().toJson(body).toString())
-
-
 }
