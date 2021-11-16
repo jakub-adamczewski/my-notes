@@ -1,5 +1,6 @@
 package com.example.mynotes.notes.active
 
+import com.example.mynotes.base.EntityId
 import com.example.mynotes.notes.Note
 import com.example.mynotes.notes.NotesService
 import com.example.mynotes.notes.NotesStore.notes
@@ -65,7 +66,7 @@ internal class NotesControllerTest {
     @Test
     fun `SHOULD create note WHEN it has title`() {
         val requestBody = NoteRequestBody(title, content)
-        val returnedNote = Note(title, content).apply { id = 5L }
+        val returnedNote = Note(title, content)
 
         every { notesService.save(title, content) } returns returnedNote
 
@@ -85,7 +86,7 @@ internal class NotesControllerTest {
 
     @Test
     fun `SHOULD edit note WHEN it exists`() {
-        val noteId = 5L
+        val noteId = EntityId.randomUUID()
         val requestBody = NoteRequestBody(title, content)
 
         every { notesService.update(noteId, title, content) } returns true
@@ -96,7 +97,7 @@ internal class NotesControllerTest {
 
     @Test
     fun `SHOULD return not found WHEN note does not exists while editing`() {
-        val noteId = 5L
+        val noteId = EntityId.randomUUID()
         val requestBody = NoteRequestBody(title, content)
 
         every { notesService.update(noteId, title, content) } returns false
@@ -107,7 +108,7 @@ internal class NotesControllerTest {
 
     @Test
     fun `delete note`() {
-        val noteId = 5L
+        val noteId = EntityId.randomUUID()
 
         every { notesService.deleteById(noteId) } just runs
 

@@ -1,5 +1,6 @@
 package com.example.mynotes.notes
 
+import com.example.mynotes.base.EntityId
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.util.*
@@ -11,9 +12,8 @@ data class Note(
     var content: String
 ) {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "serial")
-    var id: Long? = null
+    @Column(updatable = false, insertable = false)
+    val id: EntityId = EntityId.randomUUID()
 
     @CreationTimestamp
     var createdAt: Date? = null

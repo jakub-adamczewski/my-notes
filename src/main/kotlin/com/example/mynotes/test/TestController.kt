@@ -5,7 +5,7 @@ import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("api/test")
+@RequestMapping("/test")
 class TestController(private val testRepository: TestRepository) {
 
     @GetMapping("/fake")

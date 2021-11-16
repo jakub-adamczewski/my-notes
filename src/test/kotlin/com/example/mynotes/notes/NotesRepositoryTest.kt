@@ -1,6 +1,8 @@
 package com.example.mynotes.notes
 
+import com.example.mynotes.base.EntityId
 import com.example.mynotes.notes.NotesStore.notes
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 
@@ -12,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
+@AutoConfigureEmbeddedDatabase
 class NotesRepositoryTest {
 
     @Autowired
@@ -67,9 +70,9 @@ class NotesRepositoryTest {
         val newTitle = noteBeforeUpdate.title + "update"
         val newContent = noteBeforeUpdate.content + "update"
 
-        val entitiesUpdated = sut.updateNote(noteBeforeUpdate.id!!, newTitle, newContent)
+        val entitiesUpdated = sut.updateNote(noteBeforeUpdate.id, newTitle, newContent)
 
-        assert(sut.getById(noteBeforeUpdate.id!!).let {
+        assert(sut.getById(noteBeforeUpdate.id).let {
             it.title == newTitle && it.content == newContent
         })
         assert(entitiesUpdated == 1)
@@ -81,7 +84,7 @@ class NotesRepositoryTest {
         val newTitle = noteBeforeUpdate.title + "update"
         val newContent = noteBeforeUpdate.content + "update"
 
-        val entitiesUpdated = sut.updateNote(notes.last().id?.plus(1) ?: 0, newTitle, newContent)
+        val entitiesUpdated = sut.updateNote(EntityId.randomUUID(), newTitle, newContent)
 
         assert(entitiesUpdated == 0)
     }

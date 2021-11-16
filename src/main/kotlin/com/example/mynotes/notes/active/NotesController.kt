@@ -1,5 +1,6 @@
 package com.example.mynotes.notes.active
 
+import com.example.mynotes.base.EntityId
 import com.example.mynotes.notes.Note
 import com.example.mynotes.notes.model.NoteRequestBody
 import com.example.mynotes.notes.NotesService
@@ -26,12 +27,12 @@ class NotesController(private val notesService: NotesService) {
     }
 
     @PatchMapping("/{id}")
-    fun editNote(@PathVariable id: Long, @RequestBody editNoteRequestBody: NoteRequestBody) {
+    fun editNote(@PathVariable id: EntityId, @RequestBody editNoteRequestBody: NoteRequestBody) {
         val updated = notesService.update(id, editNoteRequestBody.title, editNoteRequestBody.content)
         if (!updated) throw ResponseStatusException(HttpStatus.NOT_FOUND, "This note does not exist")
     }
 
     @DeleteMapping("/{id}")
-    fun deleteNote(@PathVariable id: Long) = notesService.deleteById(id)
+    fun deleteNote(@PathVariable id: EntityId) = notesService.deleteById(id)
 
 }

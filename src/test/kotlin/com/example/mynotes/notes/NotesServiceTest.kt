@@ -1,5 +1,6 @@
 package com.example.mynotes.notes
 
+import com.example.mynotes.base.EntityId
 import io.mockk.*
 import org.junit.jupiter.api.BeforeEach
 
@@ -10,7 +11,7 @@ internal class NotesServiceTest {
     private val notesRepository = mockk<NotesRepository>(relaxed = true)
     private lateinit var sut: NotesService
 
-    private val id = 5L
+    private val id = EntityId.randomUUID()
     private val title = "My cat"
     private val content = "My dog"
 

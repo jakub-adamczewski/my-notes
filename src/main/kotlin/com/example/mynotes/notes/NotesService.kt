@@ -1,5 +1,6 @@
 package com.example.mynotes.notes
 
+import com.example.mynotes.base.EntityId
 import org.springframework.stereotype.Service
 
 @Service
@@ -11,10 +12,10 @@ class NotesService(private val notesRepository: NotesRepository) {
 
     fun save(title: String, content: String): Note = notesRepository.save(Note(title, content))
 
-    fun update(id: Long, title: String, content: String): Boolean {
+    fun update(id: EntityId, title: String, content: String): Boolean {
         val updatedEntities = notesRepository.updateNote(id, title, content)
         return updatedEntities > 0
     }
 
-    fun deleteById(id: Long) = notesRepository.deleteById(id)
+    fun deleteById(id: EntityId) = notesRepository.deleteById(id)
 }

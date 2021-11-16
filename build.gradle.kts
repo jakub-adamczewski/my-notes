@@ -8,6 +8,7 @@ plugins {
     kotlin("plugin.jpa") version "1.5.31"
     kotlin("plugin.allopen") version "1.4.32"
     id("com.google.cloud.tools.jib") version "3.1.4"
+    id("org.flywaydb.flyway") version "8.0.4"
 }
 
 jib {
@@ -38,7 +39,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("com.google.firebase:firebase-admin:8.1.0")
     implementation("junit:junit:4.13.1")
-    runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("org.postgresql:postgresql:42.3.1")
     runtimeOnly("com.h2database:h2:1.4.200")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(module = "mockito-core")
@@ -47,6 +48,7 @@ dependencies {
 
     testImplementation("io.mockk:mockk:1.12.0")
     testImplementation("com.ninja-squad:springmockk:3.0.1")
+    testImplementation("io.zonky.test:embedded-database-spring-test:2.0.1")
 }
 
 tasks.withType<KotlinCompile> {
