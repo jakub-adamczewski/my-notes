@@ -32,7 +32,16 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.5.5")
-//    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    implementation("com.google.api-client:google-api-client:1.32.1")
+    implementation("org.springframework.security:spring-security-core")
+//    implementation("org.springframework.security:spring-security-access")
+    implementation("org.springframework.security:spring-security-config")
+    implementation("org.springframework.security:spring-security-web")
+    implementation("org.springframework.boot:spring-boot-actuator-autoconfigure")
+//Thanks for using https://jar-download.com
+
+    implementation("org.zalando:problem-spring-web:0.27.0")
+
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")

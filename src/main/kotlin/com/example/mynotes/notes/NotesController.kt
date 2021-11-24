@@ -10,20 +10,20 @@ import org.springframework.web.server.ResponseStatusException
 @RequestMapping("/notes")
 class NotesController(private val notesService: NotesService) {
 
+    @GetMapping("/{id}")
+    fun getOne(@PathVariable id: EntityId): Note = notesService.findById(id)
+        ?: throw NoteNotFoundException()
+
     @GetMapping
     fun getAllBySearch(@RequestParam search: String?): List<Note> = search?.let {
         notesService.findAllBySearch(it)
     } ?: notesService.findAll()
 
-    @GetMapping("/{id}")
-    fun getOne(@PathVariable id: EntityId): Note = notesService.findById(id)
-        ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Note with id $id does not exist.")
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun addNote(@RequestBody noteRequestBody: NoteRequestBody): Note {
         if (noteRequestBody.let { it.title.isBlank() && it.content.isBlank() }) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not create empty note")
+            throw EmptyNoteException()
         }
         return notesService.save(noteRequestBody.title, noteRequestBody.content)
     }
@@ -31,10 +31,15 @@ class NotesController(private val notesService: NotesService) {
     @PatchMapping("/{id}")
     fun editNote(@PathVariable id: EntityId, @RequestBody editNoteRequestBody: NoteRequestBody) {
         val updated = notesService.update(id, editNoteRequestBody.title, editNoteRequestBody.content)
-        if (!updated) throw ResponseStatusException(HttpStatus.NOT_FOUND, "This note does not exist")
+        if (!updated) throw NoteNotFoundException()
     }
 
     @DeleteMapping("/{id}")
-    fun deleteNote(@PathVariable id: EntityId) = notesService.deleteById(id)
+    fun deleteNote(@PathVariable id: EntityId) {
+        val deleted = notesService.deleteById(id)
+        if (!deleted) throw NoteNotFoundException()
+    }
 
+    inner class EmptyNoteException : ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not create empty note.")
+    inner class NoteNotFoundException : ResponseStatusException(HttpStatus.NOT_FOUND, "This note does not exist.")
 }

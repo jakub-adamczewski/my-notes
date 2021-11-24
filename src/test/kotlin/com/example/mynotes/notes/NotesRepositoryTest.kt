@@ -1,10 +1,6 @@
 package com.example.mynotes.notes
 
-import com.example.mynotes.base.EntityId
-import com.example.mynotes.notes.util.NotesStore.notes
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 
 import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
@@ -20,72 +16,99 @@ class NotesRepositoryTest {
     @Autowired
     private lateinit var sut: NotesRepository
 
-    @BeforeEach
-    fun setUp() {
+    @Test
+    fun `SHOULD return note WHEN it belongs to user`() {
+        val userId = "1234"
+        val notes = listOf(
+            Note("t1", "c1", userId),
+            Note("t2", "c2", "4321"),
+        )
+
         sut.saveAll(notes)
-    }
+        val noteId = notes[0].id
 
-    @AfterEach
-    fun tearDown() {
-        sut.deleteAll()
-    }
-
-    @Test
-    fun `SHOULD order notes by title`() {
-        val loaded = sut.findAll()
-
-        assert(loaded == notes.sortedBy { it.title })
+        assert(sut.findNoteByIdAndUserId(noteId, userId) == notes[0])
     }
 
     @Test
-    fun `SHOULD return first note WHEN only it contains search in content`() {
-        val search = "dog"
+    fun `SHOULD NOT return note WHEN it does NOT belong to user`() {
+        val userId = "1234"
+        val notes = listOf(
+            Note("t1", "c1", userId),
+            Note("t2", "c2", "4321"),
+        )
 
-        val loaded = sut.findAllBySearchInTitleOrContent(search)
+        sut.saveAll(notes)
+        val noteId = notes[1].id
 
-        assert(loaded.size == 1 && loaded.first() == notes[0])
+        assert(sut.findNoteByIdAndUserId(noteId, userId) == null)
     }
 
     @Test
-    fun `SHOULD return second note WHEN only it contains search in title`() {
-        val search = "rat"
+    fun `SHOULD return all notes for given user id`() {
+        val userId = "1234"
+        val notes = listOf(
+            Note("t1", "c1", userId),
+            Note("t2", "c2", userId),
+            Note("t3", "c3", "sdfsdf"),
+        )
 
-        val loaded = sut.findAllBySearchInTitleOrContent(search)
+        sut.saveAll(notes)
 
-        assert(loaded.size == 1 && loaded.first() == notes[1])
+        assert(sut.findAllByUserIdOrderByTitle(userId) == notes[0, 1])
+    }
+
+
+    @Test
+    fun `SHOULD filter notes by content and title`() {
+        val userId = "1234"
+        val notes = listOf(
+            Note("cat", "dog", userId),
+            Note("mouse", "cat", userId),
+            Note("bird", "cow", userId),
+        )
+
+        sut.saveAll(notes)
+
+        assert(sut.findAllBySearchInTitleOrContentAndUserIdOrderByTitle("cat", userId) == notes[0, 1])
+        assert(sut.findAllBySearchInTitleOrContentAndUserIdOrderByTitle("dog", userId) == listOf(notes[0]))
+        assert(sut.findAllBySearchInTitleOrContentAndUserIdOrderByTitle("mouse", userId) == listOf(notes[1]))
     }
 
     @Test
-    fun `SHOULD return both notes WHEN they contain search in title or content`() {
-        val search = "cat"
+    fun `SHOULD update note and return updated rows number`() {
+        val userId = "1234"
+        val newTitle = "title1"
+        val newContent = "content1"
+        val notes = listOf(
+            Note("cat", "dog", userId),
+            Note("mouse", "cat", userId),
+        )
 
-        val loaded = sut.findAllBySearchInTitleOrContent(search)
+        sut.saveAll(notes)
+        val updatedRows = sut.updateNote(notes[0].id, userId, newTitle, newContent)
 
-        assert(loaded.size == 2 && loaded == notes)
+
+        assert(sut.findNoteByIdAndUserId(notes[0].id, userId) == notes[0].copy(title = newTitle, content = newContent))
+        assert(updatedRows == 1)
     }
 
     @Test
-    fun `SHOULD edit note WHEN it exists`() {
-        val noteBeforeUpdate = sut.findAll().first()
-        val newTitle = noteBeforeUpdate.title + "update"
-        val newContent = noteBeforeUpdate.content + "update"
+    fun `SHOULD remove note`() {
+        val userId = "1234"
+        val notes = listOf(
+            Note("cat", "dog", userId),
+            Note("mouse", "cat", userId),
+        )
 
-        val entitiesUpdated = sut.updateNote(noteBeforeUpdate.id, newTitle, newContent)
+        sut.saveAll(notes)
+        val removedRows = sut.deleteNoteByIdAndUserId(notes[0].id, userId)
 
-        assert(sut.getById(noteBeforeUpdate.id).let {
-            it.title == newTitle && it.content == newContent
-        })
-        assert(entitiesUpdated == 1)
+
+        assert(sut.findAllByUserIdOrderByTitle(userId) == listOf(notes[1]))
+        assert(removedRows == 1)
     }
 
-    @Test
-    fun `SHOULD not update any entities WHEN note does not exist`() {
-        val noteBeforeUpdate = sut.findAll().first()
-        val newTitle = noteBeforeUpdate.title + "update"
-        val newContent = noteBeforeUpdate.content + "update"
-
-        val entitiesUpdated = sut.updateNote(EntityId.randomUUID(), newTitle, newContent)
-
-        assert(entitiesUpdated == 0)
-    }
+    private operator fun List<Note>.get(vararg indexes: Int): List<Note> =
+        filterIndexed { index, _ -> index in indexes }
 }
