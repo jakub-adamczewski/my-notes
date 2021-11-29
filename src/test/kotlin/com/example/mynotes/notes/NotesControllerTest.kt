@@ -8,6 +8,7 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.ResultActions
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 @RunWith(SpringRunner::class)
 @WebMvcTest(NotesController::class)
+@AutoConfigureMockMvc(addFilters = false)
 internal class NotesControllerTest : BaseMockMvcTest() {
 
     @MockkBean
