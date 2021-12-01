@@ -1,6 +1,6 @@
 package com.example.mynotes.auth.token.filter
 
-import com.example.mynotes.AuthenticationException
+import com.example.mynotes.base.AuthenticationException
 import com.example.mynotes.auth.token.BearerTokenExtractor
 import com.example.mynotes.auth.token.authenticator.TokenAuthenticator
 import org.springframework.security.core.context.SecurityContextHolder

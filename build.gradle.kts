@@ -9,6 +9,14 @@ plugins {
     kotlin("plugin.allopen") version "1.4.32"
     id("com.google.cloud.tools.jib") version "3.1.4"
     id("org.flywaydb.flyway") version "8.0.4"
+    id("com.palantir.docker") version "0.31.0"
+}
+
+docker {
+    name = "my_notes_app"
+    setDockerfile(file("docker/Dockerfile"))
+    copySpec.from("build/libs/my-notes.jar")
+    buildArgs(mapOf("JAR_FILE" to "my-notes.jar"))
 }
 
 jib {
@@ -23,7 +31,7 @@ allOpen {
 }
 
 group = "com.example"
-version = "0.0.1-SNAPSHOT"
+version = ""
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {

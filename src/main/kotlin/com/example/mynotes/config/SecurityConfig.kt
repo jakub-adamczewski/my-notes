@@ -28,11 +28,10 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
-            .antMatchers(contextPath).permitAll()
             .antMatchers("$contextPath/health").permitAll()
             .anyRequest().authenticated()
 
-        http.antMatcher("/**").authorizeRequests()
+        http.antMatcher("$contextPath/**").authorizeRequests()
             .and()
             .csrf().disable()
             .addFilterBefore(bearerTokenFilter, UsernamePasswordAuthenticationFilter::class.java)

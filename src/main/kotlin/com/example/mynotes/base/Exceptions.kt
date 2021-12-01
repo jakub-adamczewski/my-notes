@@ -1,4 +1,4 @@
-package com.example.mynotes
+package com.example.mynotes.base
 
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.AuthenticationException

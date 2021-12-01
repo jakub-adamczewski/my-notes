@@ -21,11 +21,11 @@ internal class NotesServiceTest {
     @BeforeEach
     fun setUp() {
         every { currentUser.userId } returns USER_ID
-        sut = NotesService(notesRepository,currentUser)
+        sut = NotesService(notesRepository, currentUser)
     }
 
     @Test
-    fun `SHOULD return null WHEN trying to find not existing notes`(){
+    fun `SHOULD return null WHEN trying to find not existing notes`() {
         every { notesRepository.findNoteByIdAndUserId(NOTE_ID, USER_ID) } returns null
 
         val effect = sut.findById(NOTE_ID)
@@ -34,7 +34,7 @@ internal class NotesServiceTest {
     }
 
     @Test
-    fun `SHOULD return note WHEN trying to find it`(){
+    fun `SHOULD return note WHEN trying to find it`() {
         val testNote = Note("cat", "dog", USER_ID)
         every { notesRepository.findNoteByIdAndUserId(testNote.id, USER_ID) } returns testNote
 
@@ -44,7 +44,7 @@ internal class NotesServiceTest {
     }
 
     @Test
-    fun `SHOULD return true WHEN any note updated`(){
+    fun `SHOULD return true WHEN any note updated`() {
         every { notesRepository.updateNote(any(), any(), any(), any()) } returns 1
 
         val effect = sut.update(NOTE_ID, "test_title", "test_content")
@@ -53,7 +53,7 @@ internal class NotesServiceTest {
     }
 
     @Test
-    fun `SHOULD return false WHEN none note updated`(){
+    fun `SHOULD return false WHEN none note updated`() {
         every { notesRepository.updateNote(any(), any(), any(), any()) } returns 0
 
         val effect = sut.update(NOTE_ID, "test_title", "test_content")

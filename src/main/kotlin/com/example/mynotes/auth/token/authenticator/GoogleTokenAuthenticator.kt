@@ -1,6 +1,6 @@
 package com.example.mynotes.auth.token.authenticator
 
-import com.example.mynotes.AuthenticationException
+import com.example.mynotes.base.AuthenticationException
 import com.example.mynotes.auth.token.model.AuthToken
 import com.example.mynotes.auth.token.model.MyNotesAuthentication
 import com.example.mynotes.auth.user.model.MyNotesPrincipal
